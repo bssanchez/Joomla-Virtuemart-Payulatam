@@ -2,7 +2,7 @@
 <extension version="1.5" type="plugin" group="vmpayment" method="upgrade">
     <name>VMPAYMENT_PAYU</name>
     <creationDate>March 17 2013</creationDate>
-    <author>The Bolivar Development Team</author>
+    <author>Brandon Sanchez (kid_goth)</author>
     <authorUrl>http://bcdprojects.klabu.info</authorUrl>
     <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>

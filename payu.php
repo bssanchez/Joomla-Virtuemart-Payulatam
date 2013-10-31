@@ -4,8 +4,7 @@ defined ('_JEXEC') or die('Restricted access');
 
 /**
  *
- * @author Carlos Brice単o
- * @author Brandon Sanchez
+ * @author Brandon Sanchez (kid_goth)
  * @version $Id: payu.php 04-2013 18:44:10Z $
  * @package VirtueMart
  * @subpackage payment
