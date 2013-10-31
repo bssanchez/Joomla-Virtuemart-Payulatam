@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="1.5" type="plugin" group="vmpayment" method="upgrade">
+    <name>VMPAYMENT_PAYU</name>
+    <creationDate>March 17 2013</creationDate>
+    <author>The Bolivar Development Team</author>
+    <authorUrl>http://bcdprojects.klabu.info</authorUrl>
+    <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>2.0</version>
+    <description>
+        <![CDATA[
+        <center>
+            <a href="http://www.payulatam.com/" target="_blank"><img src="http://www.payulatam.com/themes/zen/logo.png" alt="PayU"></a>
+            <br>
+            <h3>
+                PayU Latam<br>
+                <strong style="color: #F00;">
+                    Por seguridad recuerde siempre revisar su cuenta de payu
+                    <br>para confirmar las transacciones antes de hacer el envio.
+                </strong>
+            <h3>
+        </center>
+        ]]>
+    </description>
+
+    <files>
+	<filename plugin="payu">payu.php</filename>
+        <filename plugin="payu">index.html</filename>
+        <folder>payu</folder>
+    </files>
+    
+    <media folder="images" destination="../images/stories/virtuemart/payment">
+	<filename>PayU.png</filename>
+    </media>
+    
+    <languages>
+	<language tag="es-ES">es-ES.plg_vmpayment_payu.ini</language>
+        <language tag="es-ES">es-ES.plg_vmpayment_payu.sys.ini</language>
+    </languages>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+        <param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYU_LOGOS"
+		description="VMPAYMENT_PAYU_LOGOS_DESC"
+		directory="/images/stories/virtuemart/payment"
+		default="PayU.png"
+		stripext="0" exclude="^_" />
+        <param type="spacer" default="" level="level1" />
+        <param type="text" name="payu_encrypt_key"  size="50" label="VMPAYMENT_PAYU_KEY" default="llave de encriptacion" description="VMPAYMENT_PAYU_KEY_DESC" />
+        <param type="spacer" default="" level="level1" />
+        <param type="text" name="payu_user_id"  size="50" label="VMPAYMENT_PAYU_USER_ID" default="id de usuario" description="VMPAYMENT_PAYU_USER_ID_DESC" />
+        <param type="spacer" default="" level="level1" />
+        <param type="text" name="payu_account_id"  size="50" label="VMPAYMENT_PAYU_ACCOUNT_ID" default="" description="VMPAYMENT_PAYU_ACCOUNT_ID_DESC" />
+        <param type="spacer" default="" level="level1" />
+        <param type="text" name="payu_description"  size="50" label="VMPAYMENT_PAYU_DESC" default="descripcion" description="VMPAYMENT_PAYU_DESC_DESC" />
+        <param type="spacer" default="" level="level1" />
+        <param name="debug" type="radio" default="1" label="VMPAYMENT_PAYU_DEBUG" description="VMPAYMENT_PAYU_DEBUG_DESC" >
+			<option value="0">COM_VIRTUEMART_NO</option>
+			<option value="1">COM_VIRTUEMART_YES</option>
+		</param>
+        <param name="payu_currency" type="list" default="COP" label="VMPAYMENT_PAYU_CURRENCY" description="VMPAYMENT_PAYU_CURRENCY_DESC" >
+	    <option value="COP">Peso Colombiano</option>
+	    <option value="MXN">Peso Mexicano</option>
+	    <option value="USD">U.S. Dolar</option>
+            <option value="PEN">Soles Peruanos</option>
+	</param>
+        <param type="spacer" default="" level="level1" />
+        <param name="min_amount" type="text"  label="VMPAYMENT_PAYU_MIN_AMOUNT" description="VMPAYMENT_PAYU_MIN_AMOUNT_EXPLAIN" />
+		<param type="spacer" default="" level="level1" />
+	<param name="max_amount" type="text"  label="VMPAYMENT_PAYU_MAX_AMOUNT" description="VMPAYMENT_PAYU_MAX_AMOUNT_EXPLAIN" />
+		<!--<param type="spacer" default="" level="level1" />
+        <param name="path" type="text"  label="VMPAYMENT_PAYU_RUTA" description="VMPAYMENT_PAYU_RUTA_EXPLAIN" />
+		<param type="spacer" default="" level="level1" />-->
+        <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYU_TAX" description="VMPAYMENT_PAYU_TAX_EXPLAIN" />
+        <!--<param type="text" name="payu_url_respuesta"  size="50" label="VMPAYMENT_PAYU_RESP" default="url de respuesta" description="VMPAYMENT_PAYU_RESP_DESC" />
+        <param type="text" name="payu_url_confirmacion"  size="50" label="VMPAYMENT_PAYU_CONF" default="url de confirmacion" description="VMPAYMENT_PAYU_CONF_DESC" />-->
+    </params>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="estilo" type="list"
+                    description="PAYU_CONFIG_ESTILO_DESC"
+                    label="PAYU_CONFIG_ESTILO_LABEL"
+                    default="0">
+                    <option value="0">PAYU_CONFIG_ESTILO_DEFAULT</option>
+                    <option value="1">PAYU_CONFIG_ESTILO_RED</option>
+                    <option value="2">PAYU_CONFIG_ESTILO_BLUE</option>                 
+                </field>
+                <field name="logo" type="text"
+                    description="PAYU_CONFIG_LOGO_DESC"
+                    label="PAYU_CONFIG_LOGO_LABEL"
+                    default="banner_factura.png"/>
+                </fieldset>
+        </fields>
+    </config>
+</extension>
