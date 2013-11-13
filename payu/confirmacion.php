@@ -1,5 +1,5 @@
 <?php
-    error_reporting(0);
+    error_reporting(1);
     $mensajeLog = "";
     require_once('../../../../configuration.php');
     $objConf = new JConfig();
@@ -47,24 +47,43 @@
     }
 
         $confirm = mysql_query("select conf from " . $pf . "virtuemart_payment_plg_payu where refventa = '" . $_REQUEST['ref_venta'] . "' and conf = 1;", $conexion);
-
+        
+        $dat_payment = mysql_query('SELECT * FROM  `'. $pf .'virtuemart_paymentmethods` WHERE `payment_element` = "payu"', $conexion);
+        $dat_pe = mysql_fetch_object($dat_payment);
+        $tpe = str_replace('"', '', explode('|', $dat_pe->payment_params));
+        
+        foreach($tpe as $kP => $vP) {
+        	if($vP != "") {
+        		$tmp = explode('=', $vP);
+        		$pe[$tmp[0]] = $tmp[1];
+        	}
+        }
+        
+        $firma = md5($pe['payu_encrypt_key']
+        ."~".$_POST['merchant_id']
+        ."~".$_POST['reference_sale']
+        ."~".number_format(floatval($_POST['value']), '1','.','')
+        ."~".$_POST['currency']
+        ."~".$_POST['state_pol']);
+        
+    if($firma == $_POST['sign']) {
         if(mysql_num_rows($confirm) == 0)
         {
             $usuarioId = $_REQUEST['usuario_id'];
             $fecha = date("d.m.Y-H:i:s");
-            $refVenta = $_REQUEST['ref_venta'];
-            $refPol = $_REQUEST['ref_pol'];
-            $estadoPol = $_REQUEST['codigo_respuesta_pol'];
-            $formaPago = $_REQUEST['tipo_medio_pago'];
-            $banco = $_REQUEST['medio_pago'];
-            $codigo = $_REQUEST['codigo_respuesta_pol'];
-            $mensaje = $_REQUEST['mensaje'];
-            $valor = $_REQUEST['valor'];
+            $refVenta = $_POST['reference_sale'];
+            $refPol = $_POST['reference_pol'];
+            $estadoPol = $_POST['state_pol'];
+            $formaPago = $_POST['payment_method_id'];
+            $banco = $_POST['franchise'];
+            $codigo = $_POST['response_code_pol'];
+            $mensaje = $_POST['response_message_pol'];
+            $valor = $_POST['value'];
 
             // consulta a la bd
             $sql = "UPDATE ". $pf ."virtuemart_payment_plg_payu set" 
                     ." fecha = '". $fecha
-                    . "', refpol = '" . $refPol
+                    ."', refpol = '" . $refPol
                     ."', estado_pol = '".$estadoPol
                     ."', formapago = '" . $formaPago
                     ."', banco = '" . $banco
@@ -76,33 +95,24 @@
             // select para actualizar la bd pedidos_confir y jos_vm_orders
             switch($estadoPol)
             {
-                case '1':
-                case '3':
+                case '4':
+                case 4:
                     $result_a = mysql_query("UPDATE ".$pf."virtuemart_orders SET order_status ='C' WHERE order_number = '".$refVenta."';");
                     if(!$result_a)
                     {
-                            die(mysql_error());
                             $mensajeLog .= "[".date("Y-m-d H:i:s")."] Error al ejecutar el query (".$sql.") la base de datos - ".mysql_error()."\r\n";
                     }
                 break;
                 case '5':
+                case '6':
+                case 5:
+                case 6:
                     $result_c = mysql_query("UPDATE ".$pf."virtuemart_orders SET order_status ='X' WHERE order_number = '".$refVenta."';");
                     if(!$result_c)
                     {
                             $mensajeLog .= "[".date("Y-m-d H:i:s")."] Error al ejecutar el query (".$sql.") la base de datos - ".mysql_error()."\r\n";
                     }
                 break;
-                case '6':
-                case '4':
-                case '10':
-                case '9':
-                    $result_r = mysql_query("UPDATE ".$pf."virtuemart_orders SET order_status ='R' WHERE order_number = '".$refVenta."';");
-                    if(!$result_r)
-                    {
-                            $mensajeLog .= "[".date("Y-m-d H:i:s")."] Error al ejecutar el query (".$sql.") la base de datos - ".mysql_error()."\r\n";
-                    }
-                break;
-                case '8':
                 default:
                     $result_p = mysql_query("UPDATE ".$pf."virtuemart_orders SET order_status ='P' WHERE order_number = '".$refVenta."';");
                     if(!$result_p)
@@ -123,7 +133,9 @@
         {
             //die("<center><br><h3 style='color: #F00;'><strong>Error: </strong>Esta solicitud ya ha sido registrada.</h3></center>");
         }
-    
+    }else {
+    	$mensajeLog = "\r\n\r\nLas firmas no concuerdan - orden de compra (" . $_POST['reference_sale'] . ')\r\n\r\n';
+    }
     if(strlen($mensajeLog)>0)
     {
         $filename = "./logs/confirmaciones.log";

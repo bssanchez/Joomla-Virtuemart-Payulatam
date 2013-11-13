@@ -85,24 +85,20 @@
                 <td><strong>Fecha:</strong></td><td> <?php echo(date("Y-m-d",strtotime("now"))); ?></td>
             </tr>
             <tr>
-                <td><strong>N&ordm; de Recibo :</strong></td><td> <?php echo $_GET['ref_venta'] ?></td>
+                <td><strong>N&ordm; de Recibo :</strong></td><td> <?php echo $_GET['reference_sale'] ?></td>
             </tr>
             <tr>
-                <td><strong>codigo pol :</strong></td><td> <?php echo $_GET['ref_pol'] ?></td>
+                <td><strong>codigo pol :</strong></td><td> <?php echo $_GET['reference_pol'] ?></td>
             </tr>
             <tr>
                 <td><strong>Estado de la Transaccion:</strong></td><td> <?php
-                switch($_GET['codigo_respuesta_pol'])
+                switch($_GET['response_code_pol'])
                 {
                     case 1: echo "Aprobada";
                     break;
-                    case 2: echo "Abierta";
+                    case 4: echo "Rechazada por la entidad";
                     break;
-                    case 3: echo "Pagada";
-                    break;
-                    case 4: echo "Rechazada";
-                    break;
-                    case 5: echo "Declinada";
+                    case 5: echo "Declinada por entidad financiera";
                     break;
                     case 6: echo "Fondos Insuficientes";
                     break;
@@ -120,32 +116,13 @@
                 ?></td>
             </tr>
             <tr>
-                <td><strong>Forma de Pago:</strong></td><td> <?php
-                switch($_GET['tipo_medio_pago'])
-                {
-                    case 1: echo " Tarjeta d&eacute;bito";
-                    break;
-                    case 2: echo " Tarjeta de cr&eacute;dito";
-                    break;
-                    case 3: echo " Tarjeta de crédito Verified by VISA";
-                    break;
-                    case 4: echo " Cuentas corrientes y de ahorros PSE";
-                    break;
-                }
-                ?>
-                </td>
+                <td><strong>Banco:</strong></td><td> <?php echo $_GET['franchise']; ?> </td>
             </tr>
             <tr>
-                <td><strong>Medio de pago:</strong></td><td><?php echo $_GET['medio_pago_lap']; ?></td>
+                <td><strong>Mensaje:</strong></td><td> <?php echo $_GET['response_message_pol']; ?></td>
             </tr>
             <tr>
-                <td><strong>Banco:</strong></td><td> <?php echo $_GET['medio_pago_lap']; ?> </td>
-            </tr>
-            <tr>
-                <td><strong>Mensaje:</strong></td><td> <?php echo $_GET['mensaje']; ?></td>
-            </tr>
-            <tr>
-                <td><strong>Valor:</strong></td><td> <?php echo $_GET['valor']; ?></td>
+                <td><strong>Valor:</strong></td><td> <?php echo $_GET['value']; ?></td>
             </tr>
             </tr>
             <tr>

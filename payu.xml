@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="1.5" type="plugin" group="vmpayment" method="upgrade">
     <name>VMPAYMENT_PAYU</name>
-    <creationDate>March 17 2013</creationDate>
+    <creationDate>November 12 2013</creationDate>
     <author>Brandon Sanchez (kid_goth)</author>
     <authorUrl>http://bcdprojects.klabu.info</authorUrl>
     <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
@@ -34,7 +34,7 @@
     </media>
     
     <languages>
-	<language tag="es-ES">es-ES.plg_vmpayment_payu.ini</language>
+		<language tag="es-ES">es-ES.plg_vmpayment_payu.ini</language>
         <language tag="es-ES">es-ES.plg_vmpayment_payu.sys.ini</language>
     </languages>
     <params addpath="/administrator/components/com_virtuemart/elements">
@@ -57,15 +57,15 @@
 			<option value="1">COM_VIRTUEMART_YES</option>
 		</param>
         <param name="payu_currency" type="list" default="COP" label="VMPAYMENT_PAYU_CURRENCY" description="VMPAYMENT_PAYU_CURRENCY_DESC" >
-	    <option value="COP">Peso Colombiano</option>
-	    <option value="MXN">Peso Mexicano</option>
-	    <option value="USD">U.S. Dolar</option>
-            <option value="PEN">Soles Peruanos</option>
-	</param>
+			<option value="COP">Peso Colombiano</option>
+			<option value="MXN">Peso Mexicano</option>
+			<option value="USD">U.S. Dolar</option>
+		    <option value="PEN">Soles Peruanos</option>
+		</param>
         <param type="spacer" default="" level="level1" />
         <param name="min_amount" type="text"  label="VMPAYMENT_PAYU_MIN_AMOUNT" description="VMPAYMENT_PAYU_MIN_AMOUNT_EXPLAIN" />
 		<param type="spacer" default="" level="level1" />
-	<param name="max_amount" type="text"  label="VMPAYMENT_PAYU_MAX_AMOUNT" description="VMPAYMENT_PAYU_MAX_AMOUNT_EXPLAIN" />
+		<param name="max_amount" type="text"  label="VMPAYMENT_PAYU_MAX_AMOUNT" description="VMPAYMENT_PAYU_MAX_AMOUNT_EXPLAIN" />
 		<!--<param type="spacer" default="" level="level1" />
         <param name="path" type="text"  label="VMPAYMENT_PAYU_RUTA" description="VMPAYMENT_PAYU_RUTA_EXPLAIN" />
 		<param type="spacer" default="" level="level1" />-->

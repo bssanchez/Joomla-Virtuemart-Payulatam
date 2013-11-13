@@ -4,7 +4,7 @@ defined ('_JEXEC') or die('Restricted access');
 
 /**
  *
- * @author Brandon Sanchez (kid_goth)
+ * @author Brandon Sanchez
  * @version $Id: payu.php 04-2013 18:44:10Z $
  * @package VirtueMart
  * @subpackage payment
@@ -45,7 +45,7 @@ class plgVmPaymentPayu extends vmPSPlugin {
                                     'debug'  		=> array(0, 'int'),
                                     'min_amount'        => array('', 'int'),
 		                    'max_amount'        => array('', 'int'),
-                                    'payu_currency'        => array('', 'char'),
+                                    'payu_currency'     => array('', 'char'),
 		                    'payment_logos'     => array('', 'char'),
                                     'tax_id'		=> array(0, 'int')
                 );
@@ -144,8 +144,6 @@ class plgVmPaymentPayu extends vmPSPlugin {
 		foreach ($cart->products as $key => $product) {
 			$quantity = $quantity + $product->quantity;
 		}
-
-		
 		
 		$iva = floatval($order['details']['BT']->order_billTaxAmount);		
 		$baseDevolucionIva = $order['details']['BT']->order_subtotal;
@@ -153,9 +151,12 @@ class plgVmPaymentPayu extends vmPSPlugin {
 		{
 			$baseDevolucionIva = 0;
 		}
-
-		$baseDevolucionIva = ($baseDevolucionIva != 0)?number_format(floatval($baseDevolucionIva), '2','.',''):0;
-
+			
+		$baseDevolucionIva = ($baseDevolucionIva != 0)?number_format((floatval($baseDevolucionIva) - floatval($order['details']['BT']->order_discount)), '2','.',''):0;
+		/*echo "<pre>";
+		echo $baseDevolucionIva;
+		print_r($order['details']['BT']);die();die($order['details']['BT']->order_number);*/
+		
 		$firma = md5($method->payu_encrypt_key
                 ."~".$method->payu_user_id
                 ."~".$order['details']['BT']->order_number
@@ -174,14 +175,14 @@ class plgVmPaymentPayu extends vmPSPlugin {
                     'url_confirmacion'  => JURI_VMPAYU .'/payu/' .'confirmacion.php',
                     'url_respuesta'     => JURI::base(),
                     'emailComprador'    => $order['details']['BT']->email,
-                    'cuentaId'        => $method->payu_account_id,
+                    'account_id'        => $method->payu_account_id,
                     'firma'             => $firma
                 );
 
 		$gateway = "https://gateway.payulatam.com/ppp-web-gateway";
 		if($method->debug == "1" || $method->debug == 1)
 		{
-                    $gateway = "https://gateway.payulatam.com/ppp-web-gateway";
+			$gateway = "https://stg.gatewaylap.pagosonline.net/ppp-web-gateway";
 		}
 
 		//var_dump($post_variables);die();
@@ -205,12 +206,12 @@ class plgVmPaymentPayu extends vmPSPlugin {
 		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
 		$html .= '<form action="'.$gateway.'" method="post" name="vm_payu_form">';
                 foreach ($post_variables as $name => $value) {
-			$html .= '<input type="text" name="' . $name . '" value="' . htmlspecialchars ($value) . '" />';
+			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars ($value) . '" />';
 		}
 		$html .= '<input type="submit" name="Submit"  value="' . JText::_ ('VMPAYMENT_PAYU_REDIRECT_MESSAGE') . '" />';
 		$html .= '</form></div>';
 		$html .= ' <script type="text/javascript">';
-		$html .= ' //document.vm_payu_form.submit();';
+		$html .= ' document.vm_payu_form.submit();';
 		$html .= ' </script></body></html>';
 
 		// 	2 = don't delete the cart, don't send email and don't redirect
@@ -386,7 +387,7 @@ class plgVmPaymentPayu extends vmPSPlugin {
 		
 		if ($mainframe->isAdmin()) return;
 
-		$pol = JRequest::getVar('estado_pol');
+		$pol = JRequest::getVar('state_pol');
 
 		$content =& JResponse::getBody();
 		$qst = "?".$_SERVER["QUERY_STRING"];
@@ -409,9 +410,9 @@ class plgVmPaymentPayu extends vmPSPlugin {
 			});
 		</script>';
 
-		$content = str_replace('</body>', "\n<link rel='stylesheet' type='text/css' href='". $scripts . "fancybox.css'/>" ."\n".'</body>', $content);
-		$content = str_replace('</body>', "\n<script type='text/javascript' src='". $scripts . "jquery.js'></script>" ."\n".'</body>', $content);
-		$content = str_replace('</body>', "\n<script type='text/javascript' src='". $scripts . "fancybox.js'></script>" ."\n".'</body>', $content);
+		$content = str_replace('</body>', "\n<link rel='stylesheet' type='text/css' href='http://fancyapps.com/fancybox/source/jquery.fancybox.css?v=2.1.5'/>" ."\n".'</body>', $content);
+		$content = str_replace('</body>', "\n<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>" ."\n".'</body>', $content);
+		$content = str_replace('</body>', "\n<script type='text/javascript' src='http://fancyapps.com/fancybox/source/jquery.fancybox.pack.js?v=2.1.5'></script>" ."\n".'</body>', $content);
 		$content = str_replace('</body>', "\n". $alert ."\n".'</body>', $content);
 		$content = str_replace('</body>', "\n". $showAlert ."\n".'</body>', $content);
 
