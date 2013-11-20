@@ -402,21 +402,20 @@ class plgVmPaymentPayu extends vmPSPlugin {
 
         $alert = '<a href="' . $conf . $qst . '" class="fancybox fancybox.iframe" id="pol_show_fancy" />';
         $showAlert = '<script type="text/javascript">
-			$(document).ready(function() {
-				$("#pol_show_fancy").fancybox({ easingIn: "swing", easingOut: "swing", speedIn: 500, speedOut: 300 });
-				$("#pol_show_fancy").trigger("click");
-			});
-		</script>';
+                        jQP(document).ready(function() {
+                                jQP("#pol_show_fancy").fancybox({ easingIn: "swing", easingOut: "swing", speedIn: 500, speedOut: 300 });
+                                jQP("#pol_show_fancy").trigger("click");
+                        });
+                </script>';
 
         $content = str_replace('</body>', "\n<link rel='stylesheet' type='text/css' href='".$scripts."fancybox/jquery.fancybox.css'/>" . "\n" . '</body>', $content);
-        $content = str_replace('</body>', "\n<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>" . "\n" . '</body>', $content);
+        $content = str_replace('<head>', "<head>\n<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>" . "\n<script type='text/javascript'>var jQP = $.noConflict(true);</script>", $content);
         $content = str_replace('</body>', "\n<script type='text/javascript' src='".$scripts."fancybox/jquery.fancybox.pack.js'></script>" . "\n" . '</body>', $content);
         $content = str_replace('</body>', "\n" . $alert . "\n" . '</body>', $content);
         $content = str_replace('</body>', "\n" . $showAlert . "\n" . '</body>', $content);
 
         JResponse::setBody($content);
     }
-
 }
 
 // No closing tag
