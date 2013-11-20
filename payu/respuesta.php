@@ -7,7 +7,7 @@
     $host = $objConf->host;
     //Escriba el nombre de usuario de la base de datos
     $login = $objConf->user;
-    //Escriba la contraseña del usuario de la base de datos
+    //Escriba la contrase単a del usuario de la base de datos
     $password = $objConf->password;
     //Escriba el nombre de la base de datos a utilizar
     $basedatos = $objConf->db;
@@ -74,60 +74,36 @@
                             }
                             else
                             {
-                                echo "<h1>".$_SERVER['SERVER_NAME']."</h1>";
+                                echo "<h2>".$_GET['merchant_name']."</h2>";
                             }
                         ?>
-                        <h2>Su pago est&aacute; siendo confirmado para procesar su orden...</h2>
+                        <h4>Su pago est&aacute; siendo confirmado para procesar su orden...</h4>
                     </th>
                 </tr>
             <tr>
             <tr>
-                <td><strong>Fecha:</strong></td><td> <?php echo(date("Y-m-d",strtotime("now"))); ?></td>
+                <td><strong>Orden de compra:</strong> <?php echo $_GET['referenceCode'] ?></td><td> <?php echo(date("F d \d\e\l Y",strtotime("now"))); ?></td>
             </tr>
             <tr>
-                <td><strong>N&ordm; de Recibo :</strong></td><td> <?php echo $_GET['reference_sale'] ?></td>
+                <td><strong>ID de la transacci&oacute;n (PAYU):</strong></td><td> <?php echo $_GET['transactionId']; ?></td>
             </tr>
             <tr>
-                <td><strong>codigo pol :</strong></td><td> <?php echo $_GET['reference_pol'] ?></td>
+                <td><strong>Estado de la Transaccion:</strong></td><td> <?php echo $_GET['message']; ?></td>
             </tr>
             <tr>
-                <td><strong>Estado de la Transaccion:</strong></td><td> <?php
-                switch($_GET['response_code_pol'])
-                {
-                    case 1: echo "Aprobada";
-                    break;
-                    case 4: echo "Rechazada por la entidad";
-                    break;
-                    case 5: echo "Declinada por entidad financiera";
-                    break;
-                    case 6: echo "Fondos Insuficientes";
-                    break;
-                    case 7: echo "Tarjeta inv&aacute;lida";
-                    break;
-                    case 8: echo "Pendiente (contactar a la entidad)";
-                    break;
-                    case 9: echo "Tarjeta vencida";
-                    break;
-                    case 10: echo "Tarjeta restringida";
-                    break;
-                    default: echo "Transaccion inv&aacute;lida";
-                    break;
-                }
-                ?></td>
+                <td><strong>Banco:</strong></td><td> <?php echo $_GET['lapPaymentMethod']; ?> </td>
             </tr>
             <tr>
-                <td><strong>Banco:</strong></td><td> <?php echo $_GET['franchise']; ?> </td>
+                <td><strong>Mensaje de PAYU:</strong></td><td> <?php echo ucfirst(strtolower(str_ireplace('_', ' ', $_GET['lapResponseCode']))); ?></td>
             </tr>
             <tr>
-                <td><strong>Mensaje:</strong></td><td> <?php echo $_GET['response_message_pol']; ?></td>
-            </tr>
-            <tr>
-                <td><strong>Valor:</strong></td><td> <?php echo $_GET['value']; ?></td>
+                <td><strong>Valor:</strong></td><td> <?php echo '$ ' . $_GET['TX_VALUE'] . ' COP'; ?></td>
             </tr>
             </tr>
             <tr>
-                <td colspan="2">
-                    <h3>Gracias por comprar con nosotros! </h3>
+                <td colspan="2" style="text-align: center;">
+                    <h4>Gracias por comprar con nosotros!<br>
+                    <?php echo $_GET['merchant_url']; ?></h4>
                 </td>
             </tr>
             </table>

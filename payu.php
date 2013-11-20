@@ -385,7 +385,7 @@ class plgVmPaymentPayu extends vmPSPlugin {
         if ($mainframe->isAdmin())
             return;
 
-        $pol = JRequest::getVar('state_pol');
+        $pol = JRequest::getVar('transactionState');
 
         $content = & JResponse::getBody();
         $qst = "?" . $_SERVER["QUERY_STRING"];
@@ -408,9 +408,9 @@ class plgVmPaymentPayu extends vmPSPlugin {
 			});
 		</script>';
 
-        $content = str_replace('</body>', "\n<link rel='stylesheet' type='text/css' href='http://fancyapps.com/fancybox/source/jquery.fancybox.css?v=2.1.5'/>" . "\n" . '</body>', $content);
+        $content = str_replace('</body>', "\n<link rel='stylesheet' type='text/css' href='".$scripts."fancybox/jquery.fancybox.css'/>" . "\n" . '</body>', $content);
         $content = str_replace('</body>', "\n<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>" . "\n" . '</body>', $content);
-        $content = str_replace('</body>', "\n<script type='text/javascript' src='http://fancyapps.com/fancybox/source/jquery.fancybox.pack.js?v=2.1.5'></script>" . "\n" . '</body>', $content);
+        $content = str_replace('</body>', "\n<script type='text/javascript' src='".$scripts."fancybox/jquery.fancybox.pack.js'></script>" . "\n" . '</body>', $content);
         $content = str_replace('</body>', "\n" . $alert . "\n" . '</body>', $content);
         $content = str_replace('</body>', "\n" . $showAlert . "\n" . '</body>', $content);
 
