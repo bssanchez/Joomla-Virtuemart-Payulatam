@@ -53,6 +53,28 @@
     foreach ($_POST as $key => $value) {
         $_REQUEST[$key] = mysql_real_escape_string(htmlentities($value));
     }
+    
+    $dat_payment = mysql_query('SELECT * FROM  `' . $pf . 'virtuemart_paymentmethods` WHERE `payment_element` = "payu"', $conexion);
+    $dat_pe = mysql_fetch_object($dat_payment);
+    $tpe = str_replace('"', '', explode('|', $dat_pe->payment_params));
+
+    foreach ($tpe as $kP => $vP) {
+        if ($vP != "") {
+            $tmp = explode('=', $vP);
+            $pe[$tmp[0]] = $tmp[1];
+        }
+    }
+
+    $firma = md5($pe['payu_encrypt_key']
+            . "~" . $_GET['merchantId']
+            . "~" . $_GET['referenceCode']
+            . "~" . number_format(floatval($_GET['TX_VALUE']), '1', '.', '')
+            . "~" . $_GET['currency']
+            . "~" . $_GET['transactionState']);
+    
+    if($firma != $_GET['signature']) {
+        die('Datos alterados.');
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
